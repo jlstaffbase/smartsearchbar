@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        :root { --navy-blue: #004C91; --navy-gold: #FFC72C; }
+        
+        body { font-family: 'Roboto', sans-serif; margin: 0; padding: 10px; }
+        
+        .search-container {
+            background: #ffffff;
+            border-radius: 12px; /* Rounded Corners */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        #smartSearch {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            font-size: 16px;
+            border: 2px solid #edf2f7;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        #smartSearch:focus {
+            border-color: var(--navy-blue);
+            box-shadow: 0 0 0 3px rgba(0,76,145,0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            color: var(--navy-blue);
+            font-weight: bold;
+        }
+
+        .pulse-indicator {
+            width: 10px;
+            height: 10px;
+            background: #48bb78;
+            border-radius: 50%;
+            margin-left: 15px;
+            box-shadow: 0 0 0 rgba(72, 187, 120, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(72, 187, 120, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(72, 187, 120, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="smartSearch" placeholder="Smart Search: VA Loans, Routing, or Member Scripts...">
+        </div>
+        <div class="pulse-indicator" title="Search Index Live"></div>
+    </div>
+</body>
+</html>
