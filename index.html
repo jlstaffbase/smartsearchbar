@@ -2,142 +2,127 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
         :root {
-            --navy-primary: #004C91; /* High-trust Navy */
-            --gold-accent: #FFC72C;  /* Recognition Gold */
-            --bg-light: #f8fafc;
-            --text-main: #1a202c;
+            --navy-primary: #004C91;
+            --gold-accent: #FFC72C;
+            --widget-bg: #f0f8ff;
+            --border-blue: rgba(0, 76, 145, 0.2);
         }
-
-        body { 
-            font-family: 'Roboto', sans-serif; 
-            margin: 0; 
-            padding: 15px; 
-            background: transparent; 
-        }
-
+        body { font-family: 'Roboto', sans-serif; margin: 0; padding: 10px; background: transparent; }
+        
         .search-widget-card {
-            background: white;
+            background: var(--widget-bg);
             border-radius: 12px;
-            border: 1px solid #cbd5e0;
-            box-shadow: 0 10px 25px rgba(0, 76, 145, 0.12);
-            overflow: hidden;
-            max-width: 600px;
-        }
-
-        /* Top Brand Stripe */
-        .status-bar {
-            background: var(--navy-primary);
-            height: 4px;
+            border: 1px solid var(--border-blue);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            overflow: visible; /* Changed to visible for dropdown */
             width: 100%;
-        }
-
-        .search-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .search-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--navy-primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .gold-dot {
-            height: 8px;
-            width: 8px;
-            background-color: var(--gold-accent);
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .input-group {
+            box-sizing: border-box;
             position: relative;
-            display: flex;
-            align-items: center;
         }
-
+        .status-bar { background: var(--navy-primary); height: 4px; width: 100%; border-radius: 12px 12px 0 0; }
+        .search-content { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .search-label { font-size: 11px; font-weight: 700; color: var(--navy-primary); text-transform: uppercase; letter-spacing: 1px; }
+        .input-group { position: relative; display: flex; align-items: center; width: 100%; }
+        
         #memberSearch {
             width: 100%;
-            padding: 16px 16px 16px 50px;
-            font-size: 15px;
-            border: 2px solid #e2e8f0;
+            padding: 14px 14px 14px 48px;
+            font-size: 16px;
+            border: 2px solid #cbd5e0;
             border-radius: 8px;
             outline: none;
-            transition: all 0.2s ease;
-            color: var(--text-main);
+            background: #ffffff;
+            box-sizing: border-box;
         }
+        #memberSearch:focus { border-color: var(--navy-primary); }
+        .search-icon-svg { position: absolute; left: 16px; fill: var(--navy-primary); z-index: 2; }
 
-        #memberSearch:focus {
-            border-color: var(--navy-primary);
-            box-shadow: 0 0 0 4px rgba(0, 76, 145, 0.08);
-        }
-
-        .search-icon-svg {
+        /* Dropdown Results Logic */
+        .results-dropdown {
             position: absolute;
-            left: 18px;
-            fill: var(--navy-primary);
-        }
-
-        /* Help Tags */
-        .search-tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            font-size: 11px;
-            background: #edf2f7;
-            padding: 4px 10px;
-            border-radius: 4px;
-            color: #4a5568;
-            cursor: pointer;
-            transition: 0.2s;
-            border: 1px solid transparent;
-        }
-
-        .tag:hover {
-            border-color: var(--navy-primary);
-            color: var(--navy-primary);
+            top: 100%;
+            left: 0;
+            right: 0;
             background: white;
+            border: 1px solid var(--border-blue);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 100;
+            margin-top: -5px; /* Slight overlap with input */
         }
+        .result-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+            color: #334155;
+            display: flex;
+            justify-content: space-between;
+        }
+        .result-item:hover { background: var(--navy-light); background-color: #f8fafc; color: var(--navy-primary); }
+        .result-category { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+
+        .tag { font-size: 11px; background: rgba(0, 76, 145, 0.1); padding: 6px 12px; border-radius: 4px; color: var(--navy-primary); font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
-
 <div class="search-widget-card">
     <div class="status-bar"></div>
     <div class="search-content">
-        <div class="search-label">
-            <span class="gold-dot"></span> Smart Knowledge Index
-        </div>
-        
+        <div class="search-label">Global Knowledge Index</div>
         <div class="input-group">
-            <svg class="search-icon-svg" width="20" height="20" viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-            <input type="text" id="memberSearch" placeholder="Ask a question or search VA rates, routing, etc...">
+            <svg class="search-icon-svg" width="20" height="20" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="memberSearch" placeholder="Try 'VA Loan' or 'Routing'..." onkeyup="handleTyping(event)">
+            
+            <div id="resultsPanel" class="results-dropdown">
+                <div class="result-item" onclick="triggerNativeSearch('VA Loan Requirements')">
+                    <span>VA Loan Eligibility Guidelines</span>
+                    <span class="result-category">Policy</span>
+                </div>
+                <div class="result-item" onclick="triggerNativeSearch('Routing Number')">
+                    <span>Domestic Routing Transit Number</span>
+                    <span class="result-category">FAQ</span>
+                </div>
+                <div class="result-item" onclick="triggerNativeSearch('Fraud Protocol')">
+                    <span>Emergency Account Lockdown Script</span>
+                    <span class="result-category">Script</span>
+                </div>
+            </div>
         </div>
-
-        <div class="search-tags">
-            <span class="tag">#VA-Loans</span>
-            <span class="tag">#Certificates</span>
-            <span class="tag">#RoutingNumber</span>
-            <span class="tag">#ZelleLimits</span>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span class="tag" onclick="triggerNativeSearch('Certificates')">#Certificates</span> 
+            <span class="tag" onclick="triggerNativeSearch('Zelle')">#ZelleLimits</span>
         </div>
     </div>
 </div>
 
+<script>
+    function handleTyping(event) {
+        const query = event.target.value;
+        const panel = document.getElementById('resultsPanel');
+        
+        // Show dropdown if 3+ characters typed
+        if (query.length >= 3) {
+            panel.style.display = 'block';
+        } else {
+            panel.style.display = 'none';
+        }
+
+        // Handle Enter key
+        if (event.key === "Enter") {
+            triggerNativeSearch(query);
+        }
+    }
+
+    function triggerNativeSearch(query) {
+        if (!query) return;
+        window.top.location.href = `https://showcase.staffbase.com/search?q=${encodeURIComponent(query)}`;
+    }
+</script>
 </body>
 </html>
